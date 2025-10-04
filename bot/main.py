@@ -1,7 +1,7 @@
 import os
-from pyrogram import Client, filters
+from pyrogram import Client
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 from bot.config import BOT_TOKEN, API_ID, API_HASH
 from bot.handlers import init_handlers
 
@@ -24,24 +24,26 @@ def start_pyrogram():
     # Register all handlers
     init_handlers(app)
 
-    print("[INFO] Bot is starting...")
+    print("[INFO] Pyrogram bot is starting...")
 
     # Start bot using Pyrogram
     app.run()
 
 # Python-telegram-bot setup
-def start_telegram(update: Update, context: CallbackContext):
-    update.message.reply_text("Bot is running!")
+async def start_telegram(update: Update, context: CallbackContext):
+    await update.message.reply_text("Bot is running!")
 
 def main():
     # Start Python-telegram-bot
-    updater = Updater(BOT_TOKEN, use_context=True)
-    dp = updater.dispatcher
+    application = Application.builder().token(BOT_TOKEN).build()  # python-telegram-bot v20+ এর জন্য
 
+    dp = application.dispatcher
+
+    # Register the /start command handler for python-telegram-bot
     dp.add_handler(CommandHandler("start", start_telegram))
 
-    # Start the bot
-    updater.start_polling()
+    # Start Python-telegram-bot
+    application.run_polling()
     print("[INFO] Python-telegram-bot is running!")
 
     # Start Pyrogram bot concurrently
