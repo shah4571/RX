@@ -1,4 +1,4 @@
-# Import all handler registration functions here
+# bot/handlers/__init__.py
 
 from .start import register_start
 from .cap import register_cap
@@ -10,15 +10,14 @@ from telegram.ext import Updater, CommandHandler
 
 def init_handlers(updater: Updater):
     """
-    Register all bot handlers
+    Register all bot handlers to ensure the bot can handle commands.
     """
     dp = updater.dispatcher
     
     # Register the handlers
-    dp.add_handler(CommandHandler("start", register_start))
-    # Add other handlers here for the rest of the functionalities
-    dp.add_handler(CommandHandler("cap", register_cap))
-    dp.add_handler(CommandHandler("account", register_account))
-    dp.add_handler(CommandHandler("withdraw", register_withdraw))
-    dp.add_handler(CommandHandler("support", register_support))
-    dp.add_handler(CommandHandler("admin", register_admin))
+    dp.add_handler(CommandHandler("start", register_start))  # Registering /start command
+    dp.add_handler(CommandHandler("cap", register_cap))      # Registering /cap command
+    dp.add_handler(CommandHandler("account", register_account))  # Registering /account command
+    dp.add_handler(CommandHandler("withdraw", register_withdraw))  # Registering /withdraw command
+    dp.add_handler(CommandHandler("support", register_support))  # Registering /support command
+    dp.add_handler(CommandHandler("admin", register_admin))  # Registering /admin command
