@@ -1,6 +1,3 @@
-# Telegram bot library
-python-telegram-bot==20.0
-
 # Pyrogram library (for Telegram bot with async features)
 pyrogram==2.0.44
 
