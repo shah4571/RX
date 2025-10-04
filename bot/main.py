@@ -1,6 +1,6 @@
 import os
 import asyncio
-import threading  # এটি এখানে ইমপোর্ট করতে হবে
+import threading
 from pyrogram import Client
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
@@ -12,7 +12,7 @@ SESSION_FILE = "RajuNewBot.session"
 if os.path.exists(SESSION_FILE):
     os.rename(SESSION_FILE, SESSION_FILE + ".bak")  # ব্যাকআপ হিসেবে রাখবে
 
-# Pyrogram Client setup
+# Pyrogram Client setup (aiohttp বাদ দিয়ে)
 def start_pyrogram():
     app = Client(
         "RajuNewBot",
@@ -50,16 +50,18 @@ async def main():
     await application_task
 
 def start_both_bots():
-    # Start the Pyrogram bot in a separate thread
-    pyrogram_thread = threading.Thread(target=start_pyrogram)  # threading এখানে ব্যবহার করা হচ্ছে
-    pyrogram_thread.start()
-
-    # Start Python-telegram-bot in the main asyncio thread
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    # Check which bot to run based on the config variable
+    if run_pyrogram:
+        # Start the Pyrogram bot in a separate thread
+        pyrogram_thread = threading.Thread(target=start_pyrogram)
+        pyrogram_thread.start()
+    else:
+        # Start Python-telegram-bot in the main asyncio thread
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
 
 if __name__ == "__main__":
     try:
-        start_both_bots()  # Start both bots in separate threads
+        start_both_bots()  # Start the selected bot based on the config
     except (KeyboardInterrupt, SystemExit):
         print("[INFO] Bot stopped manually")
