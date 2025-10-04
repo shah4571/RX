@@ -1,26 +1,21 @@
-# Import all handler registration functions here
-
+from pyrogram import Client, filters
+from pyrogram.types import Message
 from .start import register_start
 from .cap import register_cap
 from .account import register_account
 from .withdraw import register_withdraw
 from .support import register_support
 from .admin import register_admin
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
-def init_handlers(updater: Updater):
+def init_handlers(app: Client):
     """
     Register all bot handlers
     """
-    dp = updater.dispatcher
     
-    # Register the handlers (removed group=0)
-    dp.add_handler(CommandHandler("start", register_start))  # group=0 removed
-    dp.add_handler(CommandHandler("cap", register_cap))
-    dp.add_handler(CommandHandler("account", register_account))
-    dp.add_handler(CommandHandler("withdraw", register_withdraw))
-    dp.add_handler(CommandHandler("support", register_support))
-    dp.add_handler(CommandHandler("admin", register_admin))
-
-    # Register the callback query handler for menu options
-    dp.add_handler(CallbackQueryHandler(show_menu, pattern="menu_options"))
+    # Register the handlers
+    app.add_handler(filters.command("start")(register_start))
+    app.add_handler(filters.command("cap")(register_cap))
+    app.add_handler(filters.command("account")(register_account))
+    app.add_handler(filters.command("withdraw")(register_withdraw))
+    app.add_handler(filters.command("support")(register_support))
+    app.add_handler(filters.command("admin")(register_admin))
