@@ -37,10 +37,8 @@ def main():
     # Start Python-telegram-bot
     application = Application.builder().token(BOT_TOKEN).build()  # python-telegram-bot v20+ এর জন্য
 
-    dp = application.dispatcher
-
     # Register the /start command handler for python-telegram-bot
-    dp.add_handler(CommandHandler("start", start_telegram))
+    application.add_handler(CommandHandler("start", start_telegram))
 
     # Start Python-telegram-bot
     application.run_polling()
