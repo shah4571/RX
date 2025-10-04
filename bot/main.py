@@ -54,8 +54,9 @@ def start_both_bots():
     pyrogram_thread = threading.Thread(target=start_pyrogram)
     pyrogram_thread.start()
 
-    # Start Python-telegram-bot in the main asyncio loop
-    asyncio.run(main())
+    # Run Python-telegram-bot with asyncio in the main thread
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 
 if __name__ == "__main__":
     try:
