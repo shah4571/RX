@@ -1,12 +1,13 @@
 # bot/handlers/start.py
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
 def register_start(update: Update, context: CallbackContext):
     """
     Handles the /start command and sends a welcome message with a menu button.
     """
+    # Welcome text to be sent when user starts the bot
     welcome_text = (
         "🎉 Welcome to Robot!\n\n"
         "Enter your phone number with the country code.\n"
@@ -22,11 +23,8 @@ def register_start(update: Update, context: CallbackContext):
     # Create reply markup with the menu button
     reply_markup = InlineKeyboardMarkup(menu_button)
 
-    # Send the message with the inline menu button
-    update.message.reply_text(
-        welcome_text,
-        reply_markup=reply_markup
-    )
+    # Send the welcome message with the inline menu button
+    update.message.reply_text(welcome_text, reply_markup=reply_markup)
 
 def show_menu(update: Update, context: CallbackContext):
     """
