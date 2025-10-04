@@ -1,5 +1,7 @@
 python-telegram-bot==20.0
-
 pyrogram==2.0.44
-
 telegram==0.0.1
+
+# Add dependencies for working with asyncio and other utilities
+aiohttp==3.8.1  # Needed for asynchronous HTTP requests (required by Pyrogram)
+TgCrypto==2.1.0  # Optional, but recommended for faster Pyrogram performance
