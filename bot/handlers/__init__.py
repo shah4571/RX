@@ -14,8 +14,8 @@ def init_handlers(updater: Updater):
     """
     dp = updater.dispatcher
     
-    # Remove 'group=0' and just add the handler
-    dp.add_handler(CommandHandler("start", register_start))  # Removed group=0
+    # Register the handlers without 'group' parameter
+    dp.add_handler(CommandHandler("start", register_start))  # Removed group
     dp.add_handler(CommandHandler("cap", register_cap))
     dp.add_handler(CommandHandler("account", register_account))
     dp.add_handler(CommandHandler("withdraw", register_withdraw))
