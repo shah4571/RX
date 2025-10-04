@@ -2,8 +2,6 @@ import os
 import asyncio
 import threading
 from pyrogram import Client
-from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
 from bot.config import BOT_TOKEN, API_ID, API_HASH
 from bot.handlers import init_handlers
 
@@ -31,37 +29,14 @@ def start_pyrogram():
     # Start bot using Pyrogram
     app.run()
 
-# Python-telegram-bot setup
-async def start_telegram(update: Update, context: CallbackContext):
-    await update.message.reply_text("Bot is running!")
-
-async def main():
-    # Start Python-telegram-bot
-    application = Application.builder().token(BOT_TOKEN).build()
-
-    # Register the /start command handler for python-telegram-bot
-    application.add_handler(CommandHandler("start", start_telegram))
-
-    # Start Python-telegram-bot in an async loop
-    application_task = asyncio.create_task(application.run_polling())
-    print("[INFO] Python-telegram-bot is running!")
-
-    # Wait until the polling task finishes
-    await application_task
-
+# বট চালানোর জন্য থ্রেডিং পদ্ধতি
 def start_both_bots():
-    # Check which bot to run based on the config variable
-    if run_pyrogram:
-        # Start the Pyrogram bot in a separate thread
-        pyrogram_thread = threading.Thread(target=start_pyrogram)
-        pyrogram_thread.start()
-    else:
-        # Start Python-telegram-bot in the main asyncio thread
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(main())
+    # Pyrogram বট চালানো হবে
+    pyrogram_thread = threading.Thread(target=start_pyrogram)
+    pyrogram_thread.start()
 
 if __name__ == "__main__":
     try:
-        start_both_bots()  # Start the selected bot based on the config
+        start_both_bots()  # শুধু Pyrogram বট চালানো হবে
     except (KeyboardInterrupt, SystemExit):
         print("[INFO] Bot stopped manually")
