@@ -1,7 +1,12 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
+# bot/handlers/start.py
 
-def start(update: Update, context: CallbackContext):
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackContext
+
+def register_start(update: Update, context: CallbackContext):
+    """
+    Handles the /start command and sends a welcome message with a menu button.
+    """
     welcome_text = (
         "🎉 Welcome to Robot!\n\n"
         "Enter your phone number with the country code.\n"
@@ -24,7 +29,9 @@ def start(update: Update, context: CallbackContext):
     )
 
 def show_menu(update: Update, context: CallbackContext):
-    # Create the options menu to show after the (≡) button is clicked
+    """
+    Shows the menu when the user clicks on the hamburger button (≡).
+    """
     menu_options = [
         [InlineKeyboardButton("✅ Restart /start", callback_data="restart")],
         [InlineKeyboardButton("🌐 Capacity /cap", callback_data="capacity")],
@@ -43,22 +50,3 @@ def show_menu(update: Update, context: CallbackContext):
         "Please choose an option:",
         reply_markup=reply_markup
     )
-
-def main():
-    # Setup the Updater and Dispatcher
-    updater = Updater("YOUR_BOT_TOKEN", use_context=True)
-    dp = updater.dispatcher
-
-    # Add handlers for /start and callback queries
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CallbackQueryHandler(show_menu, pattern="menu_options"))
-
-    # Start polling
-    updater.start_polling()
-
-    print("[INFO] Bot is running!")
-
-    updater.idle()
-
-if __name__ == "__main__":
-    main()
