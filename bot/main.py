@@ -42,14 +42,19 @@ async def main():
     application.add_handler(CommandHandler("start", start_telegram))
 
     # Start Python-telegram-bot in an async loop
-    asyncio.create_task(application.run_polling())
+    application_task = asyncio.create_task(application.run_polling())
     print("[INFO] Python-telegram-bot is running!")
 
     # Start Pyrogram bot concurrently using asyncio
     await start_pyrogram()
 
+    # Wait until the polling task finishes
+    await application_task
+
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        # Get the existing event loop if one is already running
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
     except (KeyboardInterrupt, SystemExit):
         print("[INFO] Bot stopped manually")
