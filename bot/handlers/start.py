@@ -1,7 +1,7 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import CallbackContext
+from pyrogram import Client
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
-def register_start(update: Update, context: CallbackContext):
+async def register_start(client: Client, message: Message):
     """
     Handles the /start command and sends a welcome message with a menu button.
     """
@@ -21,12 +21,12 @@ def register_start(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(menu_button)
 
     # Send the message with the inline menu button
-    update.message.reply_text(
+    await message.reply(
         welcome_text,
         reply_markup=reply_markup
     )
 
-def show_menu(update: Update, context: CallbackContext):
+async def show_menu(client: Client, message: Message):
     """
     Shows the menu when the user clicks on the hamburger button (≡).
     """
@@ -42,9 +42,9 @@ def show_menu(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(menu_options)
 
     # Answer the callback query and update the message with the menu
-    query = update.callback_query
-    query.answer()
-    query.edit_message_text(
+    query = message.callback_query
+    await query.answer()
+    await query.edit_message_text(
         "Please choose an option:",
         reply_markup=reply_markup
     )
