@@ -12,6 +12,10 @@ if os.path.exists(SESSION_FILE):
 
 # Pyrogram Client setup (aiohttp বাদ দিয়ে)
 def start_pyrogram():
+    # এখানে asyncio ইভেন্ট লুপ তৈরি করা হচ্ছে
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)  # থ্রেডের জন্য লুপ সেট করতে হবে
+
     app = Client(
         "RajuNewBot",
         api_id=API_ID,
