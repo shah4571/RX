@@ -6,9 +6,3 @@ pyrogram==2.0.44
 
 # TgCrypto (Optional but recommended for faster Pyrogram performance)
 TgCrypto==1.2.5
-
-# aiohttp (For handling asynchronous HTTP requests, Pyrogram uses this)
-aiohttp==3.8.1
-
-# Other dependencies that might be needed
-requests==2.28.1  # (In case you're making HTTP requests separately)
