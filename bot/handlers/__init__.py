@@ -14,13 +14,13 @@ def init_handlers(updater: Updater):
     """
     dp = updater.dispatcher
     
-    # Register the handlers with the group=0 argument
-    dp.add_handler(CommandHandler("start", register_start, group=0))  # Add group=0
-    dp.add_handler(CommandHandler("cap", register_cap, group=0))
-    dp.add_handler(CommandHandler("account", register_account, group=0))
-    dp.add_handler(CommandHandler("withdraw", register_withdraw, group=0))
-    dp.add_handler(CommandHandler("support", register_support, group=0))
-    dp.add_handler(CommandHandler("admin", register_admin, group=0))
+    # Remove 'group=0' and just add the handler
+    dp.add_handler(CommandHandler("start", register_start))  # Removed group=0
+    dp.add_handler(CommandHandler("cap", register_cap))
+    dp.add_handler(CommandHandler("account", register_account))
+    dp.add_handler(CommandHandler("withdraw", register_withdraw))
+    dp.add_handler(CommandHandler("support", register_support))
+    dp.add_handler(CommandHandler("admin", register_admin))
 
     # Register the callback query handler for menu options
     dp.add_handler(CallbackQueryHandler(show_menu, pattern="menu_options"))
