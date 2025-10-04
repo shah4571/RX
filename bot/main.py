@@ -1,5 +1,6 @@
 import os
 import asyncio
+import threading
 from pyrogram import Client
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
@@ -12,7 +13,7 @@ if os.path.exists(SESSION_FILE):
     os.rename(SESSION_FILE, SESSION_FILE + ".bak")  # ব্যাকআপ হিসেবে রাখবে
 
 # Pyrogram Client setup
-async def start_pyrogram():
+def start_pyrogram():
     app = Client(
         "RajuNewBot",
         api_id=API_ID,
@@ -28,7 +29,7 @@ async def start_pyrogram():
     print("[INFO] Pyrogram bot is starting...")
 
     # Start bot using Pyrogram
-    await app.run()
+    app.run()
 
 # Python-telegram-bot setup
 async def start_telegram(update: Update, context: CallbackContext):
@@ -45,16 +46,19 @@ async def main():
     application_task = asyncio.create_task(application.run_polling())
     print("[INFO] Python-telegram-bot is running!")
 
-    # Start Pyrogram bot concurrently using asyncio
-    await start_pyrogram()
-
     # Wait until the polling task finishes
     await application_task
 
+def start_both_bots():
+    # Start the Pyrogram bot in a separate thread
+    pyrogram_thread = threading.Thread(target=start_pyrogram)
+    pyrogram_thread.start()
+
+    # Start Python-telegram-bot in the main asyncio loop
+    asyncio.run(main())
+
 if __name__ == "__main__":
     try:
-        # Get the existing event loop if one is already running
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(main())
+        start_both_bots()  # Start both bots in separate threads
     except (KeyboardInterrupt, SystemExit):
         print("[INFO] Bot stopped manually")
