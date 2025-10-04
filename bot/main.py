@@ -1,10 +1,18 @@
+import os
+import asyncio
+import threading  # এটি এখানে ইমপোর্ট করতে হবে
 from pyrogram import Client
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from bot.config import BOT_TOKEN, API_ID, API_HASH
 from bot.handlers import init_handlers
 
-# Pyrogram Client setup (aiohttp removed)
+# Optional: পুরনো session ব্যাকআপ/মুছে ফেলা
+SESSION_FILE = "RajuNewBot.session"
+if os.path.exists(SESSION_FILE):
+    os.rename(SESSION_FILE, SESSION_FILE + ".bak")  # ব্যাকআপ হিসেবে রাখবে
+
+# Pyrogram Client setup
 def start_pyrogram():
     app = Client(
         "RajuNewBot",
@@ -43,7 +51,7 @@ async def main():
 
 def start_both_bots():
     # Start the Pyrogram bot in a separate thread
-    pyrogram_thread = threading.Thread(target=start_pyrogram)
+    pyrogram_thread = threading.Thread(target=start_pyrogram)  # threading এখানে ব্যবহার করা হচ্ছে
     pyrogram_thread.start()
 
     # Start Python-telegram-bot in the main asyncio thread
