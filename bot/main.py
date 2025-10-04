@@ -1,6 +1,5 @@
 import os
 import asyncio
-import threading
 from pyrogram import Client
 from bot.config import BOT_TOKEN, API_ID, API_HASH
 from bot.handlers import init_handlers
@@ -11,11 +10,8 @@ if os.path.exists(SESSION_FILE):
     os.rename(SESSION_FILE, SESSION_FILE + ".bak")  # ব্যাকআপ হিসেবে রাখবে
 
 # Pyrogram Client setup (aiohttp বাদ দিয়ে)
-def start_pyrogram():
+async def start_pyrogram():
     # এখানে asyncio ইভেন্ট লুপ তৈরি করা হচ্ছে
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)  # থ্রেডের জন্য লুপ সেট করতে হবে
-
     app = Client(
         "RajuNewBot",
         api_id=API_ID,
@@ -31,16 +27,11 @@ def start_pyrogram():
     print("[INFO] Pyrogram bot is starting...")
 
     # Start bot using Pyrogram
-    app.run()
-
-# বট চালানোর জন্য থ্রেডিং পদ্ধতি
-def start_both_bots():
-    # Pyrogram বট চালানো হবে
-    pyrogram_thread = threading.Thread(target=start_pyrogram)
-    pyrogram_thread.start()
+    await app.start()
 
 if __name__ == "__main__":
     try:
-        start_both_bots()  # শুধু Pyrogram বট চালানো হবে
+        # Directly run the asyncio loop
+        asyncio.run(start_pyrogram())  # Using asyncio to run the bot
     except (KeyboardInterrupt, SystemExit):
         print("[INFO] Bot stopped manually")
