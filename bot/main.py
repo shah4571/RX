@@ -1,18 +1,10 @@
-import os
-import asyncio
-import threading
 from pyrogram import Client
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from bot.config import BOT_TOKEN, API_ID, API_HASH
 from bot.handlers import init_handlers
 
-# Optional: পুরনো session ব্যাকআপ/মুছে ফেলা
-SESSION_FILE = "RajuNewBot.session"
-if os.path.exists(SESSION_FILE):
-    os.rename(SESSION_FILE, SESSION_FILE + ".bak")  # ব্যাকআপ হিসেবে রাখবে
-
-# Pyrogram Client setup
+# Pyrogram Client setup (aiohttp removed)
 def start_pyrogram():
     app = Client(
         "RajuNewBot",
