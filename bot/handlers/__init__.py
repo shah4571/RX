@@ -12,10 +12,27 @@ def init_handlers(app: Client):
     """
     Register all bot handlers
     """
-    # Directly pass the register_start function without using lambda
-    app.add_handler(filters.command("start")(register_start))
-    app.add_handler(filters.command("cap")(register_cap))
-    app.add_handler(filters.command("account")(register_account))
-    app.add_handler(filters.command("withdraw")(register_withdraw))
-    app.add_handler(filters.command("support")(register_support))
-    app.add_handler(filters.command("admin")(register_admin))
+    # Use Pyrogram's on_message decorator for command filters
+    @app.on_message(filters.command("start"))
+    async def start_handler(client: Client, message: Message):
+        await register_start(client, message)
+
+    @app.on_message(filters.command("cap"))
+    async def cap_handler(client: Client, message: Message):
+        await register_cap(client, message)
+
+    @app.on_message(filters.command("account"))
+    async def account_handler(client: Client, message: Message):
+        await register_account(client, message)
+
+    @app.on_message(filters.command("withdraw"))
+    async def withdraw_handler(client: Client, message: Message):
+        await register_withdraw(client, message)
+
+    @app.on_message(filters.command("support"))
+    async def support_handler(client: Client, message: Message):
+        await register_support(client, message)
+
+    @app.on_message(filters.command("admin"))
+    async def admin_handler(client: Client, message: Message):
+        await register_admin(client, message)
